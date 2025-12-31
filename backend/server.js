@@ -42,6 +42,14 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
 
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'SaaS Dashboard API is running' });
+});
+
+app.use((req, res) => {
+  res.status(404).json({ error: 'Route not found', path: req.path });
+});
+
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(500).json({ error: 'Internal server error' });
