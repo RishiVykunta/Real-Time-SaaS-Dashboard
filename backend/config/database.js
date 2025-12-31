@@ -22,6 +22,9 @@ const pool = new Pool({
   database: process.env.DB_NAME || 'saas_dashboard',
   user: process.env.DB_USER || 'postgres',
   password: dbPassword,
+  ssl: process.env.DB_HOST?.includes('supabase') ? {
+    rejectUnauthorized: false
+  } : false,
 });
 
 pool.on('connect', () => {
