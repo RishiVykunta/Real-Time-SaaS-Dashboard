@@ -245,8 +245,5 @@ SAAS/
 
 
 
-This is a demonstration project. Feel free to fork and extend it for your own use.
 
----
-
-**Built with ❤️ for demonstrating full-stack engineering skills**
+This is a demonstration project.
