@@ -1,0 +1,401 @@
+# Real-Time SaaS Admin Dashboard
+
+A production-ready, real-time SaaS dashboard where admins and managers can monitor users, system activity, and analytics with live updates, secure role-based access, and professional UI.
+
+## 🚀 Features
+
+### Authentication & Authorization
+- JWT-based authentication with secure token storage
+- Role-based access control (Admin, Manager, User)
+- Protected routes on both frontend and backend
+- Secure password hashing using bcrypt
+
+### Real-Time Features (Socket.IO)
+- Live user login/logout updates
+- Real-time activity feed without page refresh
+- Instant online users count updates
+- New user registration notifications
+
+### Admin Dashboard
+- Total users count
+- Active users (real-time)
+- User growth charts with date range selection (7-365 days)
+- Activity trends visualization
+- Recent activity feed (live updates)
+- User role distribution chart
+- User management (activate/deactivate, search, export)
+- System-wide activity logs with filtering
+- CSV and PDF export functionality
+
+### Manager Dashboard
+- Analytics charts and reports
+- Live activity notifications
+- Read-only user data access
+- User growth visualization
+
+### User Profile
+- View own profile information
+- Account status and details
+- Activity tracking
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React.js - UI library
+- React Router - Client-side routing
+- Context API - State management
+- Chart.js / React-Chartjs-2 - Data visualization
+- Socket.IO Client - Real-time communication
+- Tailwind CSS - Styling
+- Axios - HTTP client
+- Vite - Build tool
+- jsPDF - PDF export
+
+### Backend
+- Node.js - Runtime environment
+- Express.js - Web framework
+- PostgreSQL - Database
+- Socket.IO - Real-time server
+- JWT - Authentication
+- bcryptjs - Password hashing
+
+## 📁 Project Structure
+
+```
+SAAS/
+├── backend/
+│   ├── config/
+│   │   └── database.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── userController.js
+│   │   ├── analyticsController.js
+│   │   └── activityController.js
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── ActivityLog.js
+│   │   └── Session.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── userRoutes.js
+│   │   ├── analyticsRoutes.js
+│   │   └── activityRoutes.js
+│   ├── socket/
+│   │   └── socketHandler.js
+│   ├── utils/
+│   │   └── jwt.js
+│   ├── server.js
+│   └── package.json
+│
+└── frontend/
+    ├── src/
+    │   ├── components/
+    │   │   ├── Layout.jsx
+    │   │   ├── ProtectedRoute.jsx
+    │   │   ├── Toast.jsx
+    │   │   ├── ConfirmDialog.jsx
+    │   │   └── LoadingSkeleton.jsx
+    │   ├── context/
+    │   │   ├── AuthContext.jsx
+    │   │   └── ToastContext.jsx
+    │   ├── hooks/
+    │   │   └── useSocket.js
+    │   ├── pages/
+    │   │   ├── Login.jsx
+    │   │   ├── Register.jsx
+    │   │   ├── Profile.jsx
+    │   │   ├── Unauthorized.jsx
+    │   │   ├── admin/
+    │   │   │   ├── AdminDashboard.jsx
+    │   │   │   ├── Users.jsx
+    │   │   │   └── Activities.jsx
+    │   │   └── manager/
+    │   │       └── ManagerDashboard.jsx
+    │   ├── services/
+    │   │   ├── authService.js
+    │   │   ├── userService.js
+    │   │   ├── analyticsService.js
+    │   │   └── activityService.js
+    │   ├── utils/
+    │   │   ├── api.js
+    │   │   ├── dateFormatter.js
+    │   │   ├── exportUtils.js
+    │   │   └── avatarUtils.js
+    │   ├── App.jsx
+    │   └── main.jsx
+    └── package.json
+```
+
+## 🗄️ Database Schema
+
+### Users Table
+- `id` - Primary key
+- `name` - User's full name
+- `email` - Unique email address
+- `password` - Hashed password
+- `role` - User role (admin, manager, user)
+- `status` - Account status (active, inactive)
+- `created_at` - Registration timestamp
+
+### Activity Logs Table
+- `id` - Primary key
+- `user_id` - Foreign key to users
+- `action` - Activity description
+- `timestamp` - Activity timestamp
+
+### Sessions Table
+- `id` - Primary key
+- `user_id` - Foreign key to users
+- `login_time` - Login timestamp
+- `logout_time` - Logout timestamp (nullable)
+
+## 👥 User Roles & Permissions
+
+### Admin
+- Full access to all users and analytics
+- View system-wide statistics
+- Manage users (activate/deactivate)
+- View real-time system logs
+- Export analytics data (CSV/PDF)
+- Filter activities by user, date range, and action type
+
+### Manager
+- View analytics and reports
+- View users (read-only)
+- Receive live notifications
+- Cannot manage users
+
+### User
+- Login & logout
+- View own profile
+- Trigger activity events
+
+## 🚀 Setup Instructions
+
+### Prerequisites
+- Node.js (v18 or higher)
+- PostgreSQL (v12 or higher)
+- npm or yarn
+
+### Backend Setup
+
+1. Navigate to backend directory:
+```bash
+cd backend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create a `.env` file:
+```env
+PORT=5000
+NODE_ENV=development
+JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
+JWT_EXPIRES_IN=7d
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=saas_dashboard
+DB_USER=postgres
+DB_PASSWORD=your_password
+CORS_ORIGIN=http://localhost:5173
+```
+
+4. Create PostgreSQL database:
+```sql
+CREATE DATABASE saas_dashboard;
+```
+
+5. Update `.env` with your database credentials
+
+6. Start the server:
+```bash
+npm run dev
+```
+
+The server will automatically create tables and a default admin user:
+- **Email:** admin@example.com
+- **Password:** admin123
+
+### Frontend Setup
+
+1. Navigate to frontend directory:
+```bash
+cd frontend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create a `.env` file:
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_SOCKET_URL=http://localhost:5000
+```
+
+4. Start the development server:
+```bash
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`
+
+## 📡 API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+- `GET /api/auth/me` - Get current user (protected)
+
+### Users (Admin/Manager)
+- `GET /api/users` - Get all users
+- `GET /api/users/:id` - Get user by ID
+- `PATCH /api/users/:id/status` - Update user status (Admin only)
+
+### Analytics (Admin/Manager)
+- `GET /api/analytics/stats` - Get dashboard statistics
+- `GET /api/analytics/user-growth?days=30` - Get user growth data
+- `GET /api/analytics/role-distribution` - Get role distribution
+- `GET /api/analytics/activity-stats?days=30` - Get activity statistics
+- `GET /api/analytics/export` - Export analytics to CSV (Admin only)
+
+### Activities
+- `GET /api/activities?limit=50&userId=1` - Get activity logs (Admin/Manager)
+- `POST /api/activities` - Create activity log
+
+## 🔌 WebSocket Events
+
+### Client → Server
+- `user_connected` - Emit when user connects
+- `user_disconnected` - Emit when user disconnects
+- `activity_created` - Emit new activity
+
+### Server → Client
+- `user_connected` - Broadcast user connection
+- `user_disconnected` - Broadcast user disconnection
+- `activity_created` - Broadcast new activity
+- `active_users_updated` - Update active users count
+
+## 🎨 UI Features
+
+- Clean SaaS-style dashboard layout
+- Responsive sidebar navigation
+- Protected routes with role-based access
+- Loading & error states
+- Professional color palette
+- Real-time updates without page refresh
+- Toast notifications
+- Confirmation dialogs
+- Search and filtering
+- Date range selection
+- CSV and PDF export
+- User avatars
+
+## 🔐 Security Features
+
+- JWT token-based authentication
+- Password hashing with bcrypt (10 rounds)
+- Role-based route protection
+- Token expiration handling
+- CORS configuration
+- SQL injection prevention (parameterized queries)
+
+## 📊 Analytics Features
+
+- **Line Chart:** User growth over time (7-365 days)
+- **Bar Chart:** Activity trends
+- **Doughnut Chart:** Role distribution
+- **Real-time Stats:** Active users, total users, online users
+- **Activity Feed:** Live activity stream
+- **CSV Export:** Download analytics data
+- **PDF Export:** Generate PDF reports
+
+## 🚢 Deployment
+
+### Frontend (Vercel)
+1. Connect your GitHub repository
+2. Set build command: `npm run build`
+3. Set output directory: `dist`
+4. Add environment variables:
+   - `VITE_API_URL` - Your backend API URL
+   - `VITE_SOCKET_URL` - Your Socket.IO server URL
+
+### Backend (Render)
+1. Create a new Web Service
+2. Connect your GitHub repository
+3. Set build command: `npm install`
+4. Set start command: `npm start`
+5. Add environment variables from `.env.example`
+6. Add PostgreSQL database (Render PostgreSQL or Supabase)
+
+### Database (Supabase/Render PostgreSQL)
+1. Create a new PostgreSQL database
+2. Update backend `.env` with connection string
+3. Tables will be created automatically on first run
+
+## 🧪 Testing the Application
+
+1. **Login as Admin:**
+   - Email: `admin@example.com`
+   - Password: `admin123`
+
+2. **Create Test Users:**
+   - Register new users via registration page
+   - Assign different roles (admin, manager, user)
+
+3. **Test Real-Time Features:**
+   - Open multiple browser tabs
+   - Login/Logout to see real-time updates
+   - Create activities to see live feed
+
+## 📝 Environment Variables
+
+### Backend (.env)
+```
+PORT=5000
+NODE_ENV=development
+JWT_SECRET=your_super_secret_jwt_key
+JWT_EXPIRES_IN=7d
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=saas_dashboard
+DB_USER=postgres
+DB_PASSWORD=your_password
+CORS_ORIGIN=http://localhost:5173
+```
+
+### Frontend (.env)
+```
+VITE_API_URL=http://localhost:5000/api
+VITE_SOCKET_URL=http://localhost:5000
+```
+
+## 🎯 Core Concepts Demonstrated
+
+- REST vs WebSocket communication
+- Real-time state synchronization
+- Role-based access control (RBAC)
+- Secure authentication & authorization
+- Scalable dashboard design
+- Backend–frontend separation
+- Clean code & modular architecture
+- Database modeling & relationships
+- API design best practices
+
+## 📄 License
+
+This project is open source and available for educational purposes.
+
+## 🤝 Contributing
+
+This is a demonstration project. Feel free to fork and extend it for your own use.
+
+---
+
+**Built with ❤️ for demonstrating full-stack engineering skills**
