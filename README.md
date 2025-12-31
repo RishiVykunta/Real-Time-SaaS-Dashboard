@@ -172,130 +172,18 @@ SAAS/
 - View own profile
 - Trigger activity events
 
-## 🚀 Setup Instructions
 
-### Prerequisites
-- Node.js (v18 or higher)
-- PostgreSQL (v12 or higher)
-- npm or yarn
 
-### Backend Setup
 
-1. Navigate to backend directory:
-```bash
-cd backend
-```
 
-2. Install dependencies:
-```bash
-npm install
-```
 
-3. Create a `.env` file:
-```env
-PORT=5000
-NODE_ENV=development
-JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
-JWT_EXPIRES_IN=7d
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=saas_dashboard
-DB_USER=postgres
-DB_PASSWORD=your_password
-CORS_ORIGIN=http://localhost:5173
-```
 
-4. Create PostgreSQL database:
-```sql
-CREATE DATABASE saas_dashboard;
-```
 
-5. Update `.env` with your database credentials
 
-6. Start the server:
-```bash
-npm run dev
-```
 
-The server will automatically create tables and a default admin user:
-- **Email:** admin@example.com
-- **Password:** admin123
 
-### Frontend Setup
 
-1. Navigate to frontend directory:
-```bash
-cd frontend
-```
 
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Create a `.env` file:
-```env
-VITE_API_URL=http://localhost:5000/api
-VITE_SOCKET_URL=http://localhost:5000
-```
-
-4. Start the development server:
-```bash
-npm run dev
-```
-
-The frontend will be available at `http://localhost:5173`
-
-## 📡 API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `GET /api/auth/me` - Get current user (protected)
-
-### Users (Admin/Manager)
-- `GET /api/users` - Get all users
-- `GET /api/users/:id` - Get user by ID
-- `PATCH /api/users/:id/status` - Update user status (Admin only)
-
-### Analytics (Admin/Manager)
-- `GET /api/analytics/stats` - Get dashboard statistics
-- `GET /api/analytics/user-growth?days=30` - Get user growth data
-- `GET /api/analytics/role-distribution` - Get role distribution
-- `GET /api/analytics/activity-stats?days=30` - Get activity statistics
-- `GET /api/analytics/export` - Export analytics to CSV (Admin only)
-
-### Activities
-- `GET /api/activities?limit=50&userId=1` - Get activity logs (Admin/Manager)
-- `POST /api/activities` - Create activity log
-
-## 🔌 WebSocket Events
-
-### Client → Server
-- `user_connected` - Emit when user connects
-- `user_disconnected` - Emit when user disconnects
-- `activity_created` - Emit new activity
-
-### Server → Client
-- `user_connected` - Broadcast user connection
-- `user_disconnected` - Broadcast user disconnection
-- `activity_created` - Broadcast new activity
-- `active_users_updated` - Update active users count
-
-## 🎨 UI Features
-
-- Clean SaaS-style dashboard layout
-- Responsive sidebar navigation
-- Protected routes with role-based access
-- Loading & error states
-- Professional color palette
-- Real-time updates without page refresh
-- Toast notifications
-- Confirmation dialogs
-- Search and filtering
-- Date range selection
-- CSV and PDF export
-- User avatars
 
 ## 🔐 Security Features
 
@@ -334,7 +222,7 @@ The frontend will be available at `http://localhost:5173`
 5. Add environment variables from `.env.example`
 6. Add PostgreSQL database (Render PostgreSQL or Supabase)
 
-### Database (Supabase/Render PostgreSQL)
+### Database (Supabase)
 1. Create a new PostgreSQL database
 2. Update backend `.env` with connection string
 3. Tables will be created automatically on first run
@@ -354,45 +242,8 @@ The frontend will be available at `http://localhost:5173`
    - Login/Logout to see real-time updates
    - Create activities to see live feed
 
-## 📝 Environment Variables
 
-### Backend (.env)
-```
-PORT=5000
-NODE_ENV=development
-JWT_SECRET=your_super_secret_jwt_key
-JWT_EXPIRES_IN=7d
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=saas_dashboard
-DB_USER=postgres
-DB_PASSWORD=your_password
-CORS_ORIGIN=http://localhost:5173
-```
 
-### Frontend (.env)
-```
-VITE_API_URL=http://localhost:5000/api
-VITE_SOCKET_URL=http://localhost:5000
-```
-
-## 🎯 Core Concepts Demonstrated
-
-- REST vs WebSocket communication
-- Real-time state synchronization
-- Role-based access control (RBAC)
-- Secure authentication & authorization
-- Scalable dashboard design
-- Backend–frontend separation
-- Clean code & modular architecture
-- Database modeling & relationships
-- API design best practices
-
-## 📄 License
-
-This project is open source and available for educational purposes.
-
-## 🤝 Contributing
 
 This is a demonstration project. Feel free to fork and extend it for your own use.
 
