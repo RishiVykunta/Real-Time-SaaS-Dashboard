@@ -16,16 +16,22 @@ console.log(`   Password length: ${process.env.DB_PASSWORD ? process.env.DB_PASS
 
 const dbPassword = process.env.DB_PASSWORD !== undefined ? String(process.env.DB_PASSWORD) : '';
 
-const pool = new Pool({
+const poolConfig = {
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT) || 5432,
   database: process.env.DB_NAME || 'saas_dashboard',
   user: process.env.DB_USER || 'postgres',
   password: dbPassword,
-  ssl: process.env.DB_HOST?.includes('supabase') ? {
-    rejectUnauthorized: false
-  } : false,
-});
+};
+
+if (process.env.DB_HOST?.includes('supabase')) {
+  poolConfig.ssl = {
+    rejectUnauthorized: false,
+    require: true
+  };
+}
+
+const pool = new Pool(poolConfig);
 
 pool.on('connect', () => {
   console.log('✅ Connected to PostgreSQL database');
