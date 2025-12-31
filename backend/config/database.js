@@ -22,6 +22,9 @@ const poolConfig = {
   database: process.env.DB_NAME || 'saas_dashboard',
   user: process.env.DB_USER || 'postgres',
   password: dbPassword,
+  connectionTimeoutMillis: 10000,
+  idleTimeoutMillis: 30000,
+  max: 20,
 };
 
 if (process.env.DB_HOST?.includes('supabase')) {
