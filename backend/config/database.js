@@ -62,6 +62,12 @@ export const testConnection = async () => {
       console.error('\n💡 Database does not exist - create it with: CREATE DATABASE saas_dashboard;');
     } else if (error.code === 'ENOTFOUND') {
       console.error('\n💡 Cannot resolve database host - check DB_HOST in .env');
+    } else if (error.code === 'ETIMEDOUT') {
+      console.error('\n💡 Connection timeout - possible issues:');
+      console.error('   1. Supabase project might be paused (check Supabase dashboard)');
+      console.error('   2. Network connectivity issues from Render to Supabase');
+      console.error('   3. Try using direct connection (port 5432) instead of pooler (port 6543)');
+      console.error('   4. Check if Supabase region matches Render region');
     }
     
     return false;
