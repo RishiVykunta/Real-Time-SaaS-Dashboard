@@ -11,6 +11,9 @@ const Activities = () => {
   const [allActivities, setAllActivities] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [uniqueUsers, setUniqueUsers] = useState([]);
+  const [uniqueActions, setUniqueActions] = useState([]);
+  const [dateFilter, setDateFilter] = useState('all');
+  const [actionFilter, setActionFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
   const socket = useSocket();
