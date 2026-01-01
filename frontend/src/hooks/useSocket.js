@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
-import { getSocket, closeSocket, getSocketInstance } from '../utils/socketInstance.js';
+import { getSocket, getSocketInstance } from '../utils/socketInstance.js';
 
 export const useSocket = () => {
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(() => getSocketInstance());
   const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated && user && user.id) {
       const socketInstance = getSocket(user.id);
-      setSocket(socketInstance);
+      if (socketInstance !== socket) {
+        setSocket(socketInstance);
+      }
     } else {
-      closeSocket();
       setSocket(null);
     }
-
-    return () => {
-    };
   }, [isAuthenticated, user?.id]);
 
   return socket;

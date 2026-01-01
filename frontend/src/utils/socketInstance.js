@@ -7,54 +7,61 @@ let connectListeners = [];
 let disconnectListeners = [];
 let errorListeners = [];
 
+let currentUserId = null;
+
 export const getSocket = (userId) => {
   if (!userId) {
     return null;
   }
 
-  if (socketInstance && socketInstance.connected) {
+  if (socketInstance && socketInstance.connected && currentUserId === userId) {
     return socketInstance;
   }
 
-  if (socketInstance) {
+  if (socketInstance && currentUserId !== userId) {
     socketInstance.close();
+    socketInstance = null;
+    currentUserId = null;
   }
 
-  socketInstance = io(SOCKET_URL, {
-    transports: ['websocket', 'polling'],
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionAttempts: 5,
-    reconnectionDelayMax: 5000,
-    timeout: 20000,
-  });
+  if (!socketInstance) {
+    socketInstance = io(SOCKET_URL, {
+      transports: ['websocket', 'polling'],
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionAttempts: 5,
+      reconnectionDelayMax: 5000,
+      timeout: 20000,
+    });
 
-  socketInstance.on('connect', () => {
-    console.log('✅ Socket connected:', socketInstance.id);
-    if (userId) {
-      socketInstance.emit('user_connected', { userId });
-    }
-    connectListeners.forEach((listener) => listener());
-  });
+    socketInstance.on('connect', () => {
+      console.log('✅ Socket connected:', socketInstance.id);
+      if (currentUserId) {
+        socketInstance.emit('user_connected', { userId: currentUserId });
+      }
+      connectListeners.forEach((listener) => listener());
+    });
 
-  socketInstance.on('connect_error', (error) => {
-    console.error('❌ Socket connection error:', error);
-    errorListeners.forEach((listener) => listener(error));
-  });
+    socketInstance.on('connect_error', (error) => {
+      console.error('❌ Socket connection error:', error);
+      errorListeners.forEach((listener) => listener(error));
+    });
 
-  socketInstance.on('disconnect', (reason) => {
-    console.log('❌ Socket disconnected:', reason);
-    disconnectListeners.forEach((listener) => listener(reason));
-    if (reason === 'io server disconnect') {
-      socketInstance.connect();
-    }
-  });
+    socketInstance.on('disconnect', (reason) => {
+      console.log('❌ Socket disconnected:', reason);
+      disconnectListeners.forEach((listener) => listener(reason));
+      if (reason === 'io server disconnect') {
+        socketInstance.connect();
+      }
+    });
 
-  socketInstance.on('error', (error) => {
-    console.error('❌ Socket error:', error);
-    errorListeners.forEach((listener) => listener(error));
-  });
+    socketInstance.on('error', (error) => {
+      console.error('❌ Socket error:', error);
+      errorListeners.forEach((listener) => listener(error));
+    });
+  }
 
+  currentUserId = userId;
   return socketInstance;
 };
 
@@ -64,6 +71,7 @@ export const closeSocket = () => {
     socketInstance.removeAllListeners();
     socketInstance.close();
     socketInstance = null;
+    currentUserId = null;
   }
 };
 
