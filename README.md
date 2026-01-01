@@ -2,6 +2,11 @@
 
 A production-ready, real-time SaaS dashboard where admins and managers can monitor users, system activity, and analytics with live updates, secure role-based access, and professional UI.
 
+## 🌐 Live Demo
+
+- **Frontend:** [[https://e-commerce-seven-ashen-41.vercel.app](https://real-time-saa-s-dashboard.vercel.app)]()
+- ⚠️ First request may take up to 30 seconds due to free-tier cold start.
+ 
 ## 🚀 Features
 
 ### Authentication & Authorization
