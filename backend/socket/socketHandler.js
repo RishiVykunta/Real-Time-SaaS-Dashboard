@@ -9,9 +9,13 @@ export const initializeSocket = (io) => {
 
   io.on('connection', (socket) => {
     console.log(`✅ Client connected: ${socket.id}`);
-
+    
     socket.on('error', (error) => {
       console.error(`❌ Socket error for ${socket.id}:`, error);
+    });
+
+    socket.on('connect_error', (error) => {
+      console.error(`❌ Socket connection error for ${socket.id}:`, error);
     });
 
     socket.on('user_connected', async (data) => {
