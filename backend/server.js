@@ -16,12 +16,17 @@ import activityRoutes from './routes/activityRoutes.js';
 const app = express();
 const httpServer = createServer(app);
 
+const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
+const allowedOrigins = corsOrigin.includes(',') ? corsOrigin.split(',').map(origin => origin.trim()) : [corsOrigin];
+
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true,
   },
+  transports: ['websocket', 'polling'],
+  allowEIO3: true,
 });
 
 const corsOptions = {

@@ -11,7 +11,10 @@ export const useSocket = () => {
   useEffect(() => {
     if (isAuthenticated && user) {
       const newSocket = io(SOCKET_URL, {
-        transports: ['websocket'],
+        transports: ['websocket', 'polling'],
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionAttempts: 5,
       });
 
       newSocket.on('connect', () => {
