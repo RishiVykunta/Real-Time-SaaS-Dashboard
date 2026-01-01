@@ -17,20 +17,33 @@ const app = express();
 const httpServer = createServer(app);
 
 const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
-const allowedOrigins = corsOrigin.includes(',') ? corsOrigin.split(',').map(origin => origin.trim()) : [corsOrigin];
+const allowedOrigins = corsOrigin.includes(',') 
+  ? corsOrigin.split(',').map(origin => origin.trim()) 
+  : [corsOrigin];
+
+console.log('🌐 CORS Configuration:');
+console.log('   Allowed Origins:', allowedOrigins);
 
 const io = new Server(httpServer, {
   cors: {
     origin: allowedOrigins,
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
   },
   transports: ['websocket', 'polling'],
   allowEIO3: true,
 });
 
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : ['http://localhost:5173'],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn('⚠️ CORS blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
