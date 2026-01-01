@@ -16,10 +16,10 @@ import activityRoutes from './routes/activityRoutes.js';
 const app = express();
 const httpServer = createServer(app);
 
-const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
+const corsOrigin = (process.env.CORS_ORIGIN || 'http://localhost:5173').trim();
 const allowedOrigins = corsOrigin.includes(',') 
-  ? corsOrigin.split(',').map(origin => origin.trim()) 
-  : [corsOrigin];
+  ? corsOrigin.split(',').map(origin => origin.trim().replace(/\n/g, '').replace(/\r/g, '')) 
+  : [corsOrigin.replace(/\n/g, '').replace(/\r/g, '')];
 
 console.log('🌐 CORS Configuration:');
 console.log('   Allowed Origins:', allowedOrigins);
