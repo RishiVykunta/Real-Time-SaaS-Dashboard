@@ -9,6 +9,8 @@ export const initializeSocket = (io) => {
 
   io.on('connection', (socket) => {
     console.log(`✅ Client connected: ${socket.id}`);
+    console.log(`   Transport: ${socket.conn.transport.name}`);
+    console.log(`   Headers:`, socket.handshake.headers);
     
     socket.on('error', (error) => {
       console.error(`❌ Socket error for ${socket.id}:`, error);
@@ -39,8 +41,9 @@ export const initializeSocket = (io) => {
       socket.broadcast.emit('activity_created', data);
     });
 
-    socket.on('disconnect', async () => {
+    socket.on('disconnect', async (reason) => {
       console.log(`❌ Client disconnected: ${socket.id}`);
+      console.log(`   Reason: ${reason}`);
       if (socket.userId) {
         const activeSessions = await getActiveSessions();
         io.emit('active_users_updated', { count: activeSessions.length });

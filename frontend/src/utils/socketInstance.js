@@ -49,8 +49,10 @@ export const getSocket = (userId) => {
 
     socketInstance.on('disconnect', (reason) => {
       console.log('❌ Socket disconnected:', reason);
+      console.log('   Socket ID was:', socketInstance.id);
       disconnectListeners.forEach((listener) => listener(reason));
       if (reason === 'io server disconnect') {
+        console.log('   Attempting to reconnect...');
         socketInstance.connect();
       }
     });
