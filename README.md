@@ -4,7 +4,7 @@ A production-ready, real-time SaaS dashboard where admins and managers can monit
 
 ## 🌐 Live Demo
 
-- **Frontend:** [[https://e-commerce-seven-ashen-41.vercel.app](https://real-time-saa-s-dashboard.vercel.app)]()
+- **Frontend:** [https://real-time-saa-s-dashboard.vercel.app]
 - ⚠️ First request may take up to 30 seconds due to free-tier cold start.
  
 ## 🚀 Features
